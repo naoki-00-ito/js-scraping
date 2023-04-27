@@ -24,7 +24,7 @@ npm install puppeteer
 PAGE_URL=https://www.hoge.hoge
 ```
 
-scraping.js内、スクレイピング要素指定変数を任意のものに書き換える
+scraping.js内、スクレイピング要素指定変数の値を対象要素のセレクターに書き換える
 
 ```diff
 - const selectorItemWrap = ".item";
