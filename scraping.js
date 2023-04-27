@@ -14,34 +14,36 @@ const scrape = async () => {
   const url = process.env.PAGE_URL;
   await page.goto(url, { waitUntil: 'domcontentloaded' });
 
-  const selector01 = ".articleTtl";
-  const selector02 = ".listTtl";
-  const selector03 = ".summary";
-  const selector04 = ".linkWrap a";
+  // --- スクレイピング要素指定変数
+  const selectorItemWrap = ".item";
+  const selectorTitle = ".title";
+  const selectorText = ".text";
+  const selectorLink = ".link";
+  // ---
 
   const targets = [
     {
-      selector: selector01,
+      selector: selectorItemWrap,
       childrens: [
         {
-          selector: selector02,
+          selector: selectorTitle,
           isMultiple: false,
         },
 
         {
-          selector: selector03,
+          selector: selectorText,
           isMultiple: false,
         },
 
         {
-          selector: selector04,
+          selector: selectorLink,
           isMultiple: true,
         },
       ]
     },
   ];
 
-  const targetParents = await page.$$(selector01);
+  const targetParents = await page.$$(selectorItemWrap);
   const results = [];
 
   // Promise.allを使用してすべての子要素を非同期で取得する
@@ -72,9 +74,9 @@ const scrape = async () => {
   const outputStream = fs.createWriteStream(`./dist/${year}${month}${day}${hours}${minutes}-results.csv`);
   outputStream.write('Title,Summary,Links\n');
   results.forEach(result => {
-    const title = result[selector02].textContent;
-    const summary = result[selector03].textContent;
-    const links = result[selector04] ? result[selector04].map(element => element.href).join('★★|★★') : '';
+    const title = result[selectorTitle].textContent;
+    const summary = result[selectorText].textContent;
+    const links = result[selectorLink] ? result[selectorLink].map(element => element.href).join('★★|★★') : '';
     const row = `${title},${summary},${links}\n`;
     outputStream.write(row);
   });
