@@ -2,11 +2,15 @@
   "name": "js-scraping",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "scraping.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "puppeteer": "^19.11.1"
+  }
 }
