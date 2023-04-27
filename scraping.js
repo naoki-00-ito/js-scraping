@@ -41,13 +41,13 @@ const scrape = async () => {
     },
   ];
 
-  let results = [];
+  const targetParents = await page.$$(selector01);
+  const results = [];
 
   // Promise.allを使用してすべての子要素を非同期で取得する
-  await Promise.all(targets.map(async (target) => {
-    const targetParent = await page.$(target.selector);
+  await Promise.all(targetParents.map(async (targetParent) => {
     const targetResult = {};
-    await Promise.all(target.childrens.map(async (children) => {
+    await Promise.all(targets[0].childrens.map(async (children) => {
       let childrenResult = null;
       if (children.isMultiple) {
         childrenResult = await targetParent.$$eval(children.selector, elements => elements.map(element => ({ textContent: element.textContent, href: element.href })));
@@ -64,17 +64,17 @@ const scrape = async () => {
   // CSVファイルに書き込む
   const today = new Date();
   const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const day = today.getDate();
-  const hours = today.getHours();
-  const minutes = today.getMinutes();
+  const month = ('00' + (today.getMonth() + 1)).slice(-2);
+  const day = ('00' + today.getDate()).slice(-2);
+  const hours = ('00' + today.getHours()).slice(-2);
+  const minutes = ('00' + today.getMinutes()).slice(-2);
 
   const outputStream = fs.createWriteStream(`./dist/${year}${month}${day}${hours}${minutes}-results.csv`);
   outputStream.write('Title,Summary,Links\n');
   results.forEach(result => {
     const title = result[selector02].textContent;
     const summary = result[selector03].textContent;
-    const links = result[selector04] ? result[selector04].map(element => element.href).join(' | ') : '';
+    const links = result[selector04] ? result[selector04].map(element => element.href).join('★★|★★') : '';
     const row = `${title},${summary},${links}\n`;
     outputStream.write(row);
   });
