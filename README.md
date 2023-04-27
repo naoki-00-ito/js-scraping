@@ -12,16 +12,10 @@
 
 ## 利用方法
 
-puppeteerをインストールする
+packageをインストールする
 
 ```
-npm i puppeteer
-```
-
-dotenvをインストールする
-
-```
-npm install dotenv
+npm install puppeteer
 ```
 
 .env を作成し、スクレイピング対象のページのURLを記述する
@@ -30,7 +24,7 @@ npm install dotenv
 PAGE_URL=https://www.hoge.hoge
 ```
 
-スクレイピング要素指定変数を任意のものに書き換える
+scraping.js内、スクレイピング要素指定変数を任意のものに書き換える
 
 ```diff
 - const selectorItemWrap = ".item";
@@ -48,3 +42,7 @@ PAGE_URL=https://www.hoge.hoge
 ```
 node scraping.js
 ```
+
+distディレクトリにCSVが出力される
+
+![スクリーンショット 2023-04-27 18 10 08](https://user-images.githubusercontent.com/117070296/234815955-b98bdb7b-7df0-413e-8b09-358f8eb74d40.png)
