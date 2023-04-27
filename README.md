@@ -15,7 +15,7 @@
 packageをインストールする
 
 ```
-npm install puppeteer
+npm install 
 ```
 
 .env を作成し、スクレイピング対象のページのURLを記述する
