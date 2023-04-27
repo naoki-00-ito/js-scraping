@@ -6,7 +6,8 @@
 
 - node 14.16.0
 - npm 6.14.11
-- puppeteer
+- puppeteer 19.11.1
+- dotenv 16.0.3
 
 
 ## 利用方法
