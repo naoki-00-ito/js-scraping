@@ -27,17 +27,17 @@ const scrape = async () => {
       childrens: [
         {
           selector: selectorTitle,
-          isMultiple: false,
+          isLink: false,
         },
 
         {
           selector: selectorText,
-          isMultiple: false,
+          isLink: false,
         },
 
         {
           selector: selectorLink,
-          isMultiple: true,
+          isLink: true,
         },
       ]
     },
@@ -51,7 +51,7 @@ const scrape = async () => {
     const targetResult = {};
     await Promise.all(targets[0].childrens.map(async (children) => {
       let childrenResult = null;
-      if (children.isMultiple) {
+      if (children.isLink) {
         childrenResult = await targetParent.$$eval(children.selector, elements => elements.map(element => ({ textContent: element.textContent, href: element.href })));
       } else {
         childrenResult = await targetParent.$eval(children.selector, element => ({ textContent: element.textContent }));
@@ -72,12 +72,13 @@ const scrape = async () => {
   const minutes = ('00' + today.getMinutes()).slice(-2);
 
   const outputStream = fs.createWriteStream(`./dist/${year}${month}${day}${hours}${minutes}-results.csv`);
-  outputStream.write('Title,Summary,Links\n');
+  outputStream.write('Title,Summary,LinksText,LinksUrl\n');
   results.forEach(result => {
     const title = result[selectorTitle].textContent;
     const summary = result[selectorText].textContent;
-    const links = result[selectorLink] ? result[selectorLink].map(element => element.href).join('★★|★★') : '';
-    const row = `${title},${summary},${links}\n`;
+    const linksText = result[selectorLink] ? result[selectorLink].map(element => element.textContent).join('★★|★★') : '';
+    const linksUrl = result[selectorLink] ? result[selectorLink].map(element => element.href).join('★★|★★') : '';
+    const row = `${title},${summary},${linksText},${linksUrl}\n`;
     outputStream.write(row);
   });
   outputStream.end();
